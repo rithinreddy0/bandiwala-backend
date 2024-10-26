@@ -28,9 +28,9 @@ const sendMail = (otp,email)=>{
   transporter.sendMail(mailOptions);
 }
 // Helper function to generate OTP
-const generateOTP = () => {
-    return Math.floor(100000 + Math.random() * 900000).toString(); // 6-digit OTP
-};
+function generateOTP() {
+  return Math.floor(1000 + Math.random() * 9000).toString(); // Example: 1234
+}
 
 // Signup
 exports.signup = async (req, res) => {

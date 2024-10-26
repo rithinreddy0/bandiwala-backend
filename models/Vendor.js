@@ -2,11 +2,6 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const vendorSchema = new Schema({
-  name: {
-    type: String,
-    required: true,
-    trim: true,
-  },
   email: {
     type: String,
     required: true,
@@ -28,6 +23,10 @@ const vendorSchema = new Schema({
   restaurantName: {
     type: String,
     required: true,
+  },
+  logo: {
+    type: String, // You can store the URL or path to the image
+    required: true, // Assuming the logo is mandatory
   },
   menuItems: [{
     type: Schema.Types.ObjectId,

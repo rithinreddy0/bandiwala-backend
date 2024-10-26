@@ -5,7 +5,7 @@ require('dotenv').config();
 const bcrypt = require('bcrypt');
 // Generate a 6-digit OTP
 function generateOTP() {
-    return Math.floor(100000 + Math.random() * 900000).toString(); // Example: 123456
+    return Math.floor(1000 + Math.random() * 9000).toString(); // Example: 1234
 }
 
 exports.requestPasswordReset = async (req, res) => {

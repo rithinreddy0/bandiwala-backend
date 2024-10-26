@@ -6,6 +6,7 @@ const db_connect= require("./config/Dbconenct");
 const cors = require("cors");
 const cookieparser = require("cookie-parser");
 const UserRouter = require("./Routes/UserRoute");
+const VendorRouter = require("./Routes/VendorRoute");
 
 
 //constants
@@ -18,6 +19,7 @@ const app = express();
 
 //middle wares
 app.use(bodyparser.json());
+app.use(bodyparser.urlencoded({ extended: true }))
 app.use(cors());
 app.use(express.json());
 
@@ -32,6 +34,7 @@ db_connect();
 
 //routes
 app.use('/api/users',UserRouter);
+app.use("/api/vendor",VendorRouter)
 app.get("/",(req,res)=>{
     res.send("Welcome Bandi Wala ")
 })
