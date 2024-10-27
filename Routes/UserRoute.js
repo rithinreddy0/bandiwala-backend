@@ -3,6 +3,12 @@ const express = require('express');
 const { check } = require('express-validator');
 const authController = require('../controllers/User/authController');
 const { resetPassword, requestPasswordReset, verifyOTP } = require('../controllers/User/resetPassword');
+const { updateAddress } = require('../controllers/User/User.personal');
+const { getAllVendors, getVendorDetails } = require('../controllers/User/user.vendors');
+const { addToCart, getCartDetails, deleteCart } = require('../controllers/User/User.cart');
+const { createOrder, getOrderDetails } = require('../controllers/User/User.oder');
+const { searchMenuItems } = require('../controllers/User/User.search');
+const { addReview } = require('../controllers/User/User.rating');
 
 const UserRouter = express.Router();
 
@@ -20,5 +26,27 @@ UserRouter.post('/login', [
 UserRouter.post('/request-password-reset',requestPasswordReset);
 UserRouter.post('/verify-password-reset',verifyOTP);
 UserRouter.post('/reset-password',resetPassword);
+
+//updating profile
+UserRouter.post("/updateAddresss",updateAddress)
+
+//vendor details routes
+UserRouter.post("/getAllVendors",getAllVendors)
+UserRouter.post("/getVendorDetails",getVendorDetails)
+
+//cart routes
+UserRouter.post("/addToCart",addToCart)
+UserRouter.post("/getCartDetails",getCartDetails)
+UserRouter.post("/deleteCart",deleteCart)
+
+//order Routes
+UserRouter.post("/createOrder",createOrder)
+UserRouter.post("/getOrderDetails",getOrderDetails)
+
+//searching routes
+UserRouter.post("/searchAllItems",searchMenuItems)
+
+//review routes
+UserRouter.post("/addReview",addReview)
 
 module.exports = UserRouter;

@@ -2,9 +2,14 @@
 const mongoose = require('mongoose');
 
 const menuItemSchema = new mongoose.Schema({
-  createdBy:{
+  vendorId:{
     type:mongoose.Types.ObjectId,
     ref:"Vendor",
+  },
+  status:{
+    type:String,
+    enum:["active","inactive"],
+    default:"active"
   },
   name: {
     type: String,

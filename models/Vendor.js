@@ -48,6 +48,8 @@ const vendorSchema = new Schema({
     },
     review: String,
   }],
+  averageRating: { type: Number, default: 0 },
+
   createdAt: {
     type: Date,
     default: Date.now,
