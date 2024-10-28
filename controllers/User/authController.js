@@ -129,9 +129,13 @@ exports.login = async (req, res) => {
         // Check if the password matches
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) return res.status(400).json({ message: 'Invalid password' });
-
+        const payload = { 
+          _id: user._id ,
+          email: user.email,
+          isVerified: user.isVerified
+        }
         // Create JWT token
-        const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '1h' });
 
         // Send the token as a cookie
         res.cookie('userToken', token, { httpOnly: true, maxAge: 3600000 }); // 1 hour

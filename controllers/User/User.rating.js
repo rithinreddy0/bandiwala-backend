@@ -4,8 +4,8 @@ const Vendor = require('../../models/Vendor'); // Adjust the path as needed
 exports.addReview = async (req, res) => {
     try {
         const { vendorId } = req.params; // Assuming vendorId is passed in the URL
-        const { userId, rating, comment } = req.body;
-
+        const { user, rating, comment } = req.body;
+        const userid = user._id;
         // Input validation
         if (!userId || !rating) {
             return res.status(400).json({
