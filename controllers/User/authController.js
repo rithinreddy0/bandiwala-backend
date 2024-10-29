@@ -145,7 +145,7 @@ exports.login = async (req, res) => {
         // Send the token as a cookie
         res.cookie('userToken', token, { httpOnly: true, maxAge: 3600000 }); // 1 hour
 
-        res.status(200).json({ 
+        return res.status(200).json({ 
           message: 'Logged in successfully' ,
           token,
           user
