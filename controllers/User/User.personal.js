@@ -2,17 +2,17 @@ const User = require('../../models/User'); // Adjust the path as needed
 
 exports.updateAddress = async (req, res) => {
     try {
-        const { userId, address } = req.body;
+        const { user, address } = req.body;
 
         // Check for required fields
-        if (!userId || !address || !address.roomNo || !address.block || !address.phoneNumber || !address.landmark) {
+        if (!user._id || !address || !address.roomNo || !address.block || !address.phoneNumber || !address.landmark) {
             return res.status(400).json({
                 message: "User ID and complete address fields (roomNo, block, phoneNumber, landmark) are required"
             });
         }
 
         // Find the user by ID
-        const user = await User.findById(userId);
+        const user1 = await User.findById(user._id);
         if (!user) {
             return res.status(404).json({
                 message: "User not found"
@@ -20,7 +20,7 @@ exports.updateAddress = async (req, res) => {
         }
 
         // Update or set the address
-        user.address = {
+        user1.address = {
             roomNo: address.roomNo,
             block: address.block,
             phoneNumber: address.phoneNumber,
@@ -28,7 +28,7 @@ exports.updateAddress = async (req, res) => {
         };
 
         // Save the updated user
-        await user.save();
+        await user1.save();
 
         res.status(200).json({
             message: "Address updated successfully",

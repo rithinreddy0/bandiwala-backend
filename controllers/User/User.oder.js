@@ -4,7 +4,8 @@ const User = require('../../models/User'); // Adjust the path as needed
 
 exports.createOrder = async (req, res) => {
     try {
-        const { userId, vendorId } = req.body;
+        const { user1, vendorId } = req.body;
+        const userId = user1._id;
         // Input validation
         if (!userId || !vendorId) {
             return res.status(400).json({

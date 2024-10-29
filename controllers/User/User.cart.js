@@ -3,7 +3,8 @@ const MenuItem = require('../../models/MenuItem');
 
 exports.addToCart = async (req, res) => {
     try {
-        const { userId, menuItemId, quantity } = req.body;
+        const { user, menuItemId, quantity } = req.body;
+        userId = user._id;
         // Input validation
         if (!userId || !menuItemId || !quantity) {
             return res.status(400).json({
@@ -64,8 +65,8 @@ exports.addToCart = async (req, res) => {
 
 exports.getCartDetails = async (req, res) => {
     try {
-        const { id } = req.body;
-
+        const { user } = req.body;
+        const userId = user._id;
         // Input validation
         if (!userId) {
             return res.status(400).json({
@@ -99,8 +100,8 @@ exports.getCartDetails = async (req, res) => {
 
 exports.deleteCart = async (req, res) => {
     try {
-        const { id } = req.body;
-
+        const { user} = req.body;
+        const userId = user._id;
         // Input validation
         if (!userId) {
             return res.status(400).json({
