@@ -62,7 +62,7 @@ exports.signup = async (req, res) => {
               }
           }
           // Return 400 if the user exists and is already verified
-          return res.status(400).json({ message: 'User already exists' });
+          return res.status(400).json({ message: 'User already exists, please sign in.' });
       }
 
       // Create OTP and expiration time for a new user
