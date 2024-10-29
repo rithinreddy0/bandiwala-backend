@@ -46,12 +46,12 @@ exports.signup = async (req, res) => {
               const otpExpires = new Date(Date.now() + 5 * 60 * 1000); // OTP expires in 10 minutes
               const update = await  User.findOneAndUpdate({email},{otp,otpExpires});
               sendMail(otp,user.email)
-              return res.status(202).json({
+              return res.status(200).json({
                 message:"User not verified New otp updated"
               })
             }
             catch(error){
-              return res.status(400).json({
+              return res.status(500).json({
                 message:"Internal server error",
                 error:error.message
               })
