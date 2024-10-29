@@ -34,57 +34,62 @@ function generateOTP() {
 
 // Signup
 exports.signup = async (req, res) => {
-    const { name, email, password } = req.body;
+  const { name, email, password } = req.body;
 
-    try {
-        // Check if user already exists
-        let user = await User.findOne({ email });
-        if (user){ 
-          if(user.isVerified==false){
-            try{
-              const otp = generateOTP();
-              const otpExpires = new Date(Date.now() + 5 * 60 * 1000); // OTP expires in 10 minutes
-              const update = await  User.findOneAndUpdate({email},{otp,otpExpires});
-              sendMail(otp,user.email)
-              return res.status(200).json({
-                message:"User not verified New otp updated"
-              })
-            }
-            catch(error){
-              return res.status(500).json({
-                message:"Internal server error",
-                error:error.message
-              })
-            }
-            
+  try {
+      // Check if user already exists
+      let user = await User.findOne({ email });
+      
+      if (user) { 
+          if (!user.isVerified) {
+              try {
+                  const otp = generateOTP();
+                  const otpExpires = new Date(Date.now() + 5 * 60 * 1000); // OTP expires in 5 minutes
+
+                  // Update the OTP and expiration for the unverified user
+                  await User.findOneAndUpdate({ email }, { otp, otpExpires });
+                  sendMail(otp, user.email);
+
+                  // Return 200 since this is a successful flow for unverified user re-sending OTP
+                  return res.status(200).json({
+                      message: "User not verified. New OTP sent to email."
+                  });
+              } catch (error) {
+                  return res.status(500).json({
+                      message: "Internal server error",
+                      error: error.message
+                  });
+              }
           }
+          // Return 400 if the user exists and is already verified
           return res.status(400).json({ message: 'User already exists' });
-        }
+      }
 
-        // Create OTP and its expiration time
-        const otp = generateOTP();
-        const otpExpires = new Date( Date.now() + 5 * 60 * 1000); // OTP expires in 10 minutes
-        // console.log(Date.now() + 5 * 60 * 1000)
-        // Create new user but not verified yet
-        user = new User({
-            name,
-            email,
-            password,
-            otp,
-            otpExpires
-        });
+      // Create OTP and expiration time for a new user
+      const otp = generateOTP();
+      const otpExpires = new Date(Date.now() + 5 * 60 * 1000); // OTP expires in 5 minutes
 
-         await user.save();
+      // Create a new user entry
+      user = new User({
+          name,
+          email,
+          password,
+          otp,
+          otpExpires
+      });
 
-        // Send OTP via email (or you can use an SMS API for phone verification)
-        sendMail(otp,user.email)
+      await user.save();
 
-        res.status(200).json({ message: 'OTP sent to email for verification' });
+      // Send OTP to email
+      sendMail(otp, user.email);
 
-    } catch (err) {
-        console.error(err.message);
-        res.status(500).send('Server error');
-    }
+      // Return 201 for successful user creation with OTP
+      return res.status(201).json({ message: 'OTP sent to email for verification' });
+
+  } catch (err) {
+      console.error(err.message);
+      res.status(500).json({ message: 'Server error' });
+  }
 };
 
 // Verify OTP
