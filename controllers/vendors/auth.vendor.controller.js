@@ -6,13 +6,13 @@ exports.vendorSignup = async (req,res)=>{
     try{
         const {email,password,phone,address,restaurantName} = req.body;
         if(!email||!password||!phone||!address||!restaurantName){
-            return res.status(402).json({
+            return res.status(400).json({
                 message:"All feilds are required"
             })
         }
         const previous_user = await Vendor.findOne({email,phone})
         if(previous_user){
-            return res.status(403).json({
+            return res.status(400).json({
                 message:"User already Exists"
             })
         }
@@ -33,18 +33,18 @@ exports.vendorLogin = async (reeq,res)=>{
     try{
         const {email,password} = req.body;
         if(!email||!password){
-            return res.status(500).json({
+            return res.status(400).json({
                 message:"Invalid Details"
             })
         }
         const existing_user = await Vendor.findOne({email})
         if(!existing_user){
-            return res.status(403).json({
+            return res.status(400).json({
                 message:"User doesnot exists"
             })
         }
         if (!bcrypt.compare(existing_user.password,password)){
-            return res.status(402).json({
+            return res.status(400).json({
                 message:"Incorrect Password"
             })
         }
