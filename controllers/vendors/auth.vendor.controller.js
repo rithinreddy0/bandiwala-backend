@@ -29,7 +29,7 @@ exports.vendorSignup = async (req,res)=>{
         })
     }
 }
-exports.vendorLogin = async (reeq,res)=>{
+exports.vendorLogin = async (req,res)=>{
     try{
         const {email,password} = req.body;
         if(!email||!password){
