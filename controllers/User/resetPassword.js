@@ -15,13 +15,13 @@ exports.requestPasswordReset = async (req, res) => {
         // Find user by email
         const user = await User.findOne({ email });
         if (!user) {
-            return res.status(404).send('User not found');
+            return res.status(400).send('User not found');
         }
 
         // Generate OTP and expiry
         const otp = generateOTP();
         user.otp = otp;
-        user.otpExpiry = new Date(Date.now() + 300000); // OTP valid for 5 minutes
+        user.otpExpiry = new Date(Date.now() + 5 * 60 * 1000); // OTP valid for 5 minutes
         await user.save();
 
         // Send OTP to user via email
@@ -41,7 +41,7 @@ exports.requestPasswordReset = async (req, res) => {
             if (err) {
                 return res.status(500).send('Error sending email');
             }
-            res.send('OTP sent to your email!');
+            res.status(200).send('OTP sent to your email!');
         });
     } catch (error) {
         res.status(500).send('Server error');
@@ -54,7 +54,7 @@ exports.verifyOTP = async (req, res) => {
         // Find user by email and validate OTP
         const user = await User.findOne({ email });
         if (!user) {
-            return res.status(404).send('User not found');
+            return res.status(400).send('User not found');
         }
 
         // Verify OTP and check expiry
@@ -63,7 +63,7 @@ exports.verifyOTP = async (req, res) => {
         }
 
         // OTP is valid, allow password reset
-        res.send('OTP verified. Proceed to reset password.');
+        res.status(200).send('OTP verified. Proceed to reset password.');
     } catch (error) {
         res.status(500).send('Server error');
     }
@@ -83,7 +83,7 @@ exports.resetPassword = async (req, res) => {
         // Find user by email
         const user = await User.findOne({ email });
         if (!user) {
-            return res.status(404).send('User not found');
+            return res.status(400).send('User not found');
         }
 
         // Hash the new password
@@ -95,7 +95,7 @@ exports.resetPassword = async (req, res) => {
         user.otpExpiry = undefined;  // Clear expiry
         await user.save();
 
-        res.send('Password has been reset successfully!');
+        res.status(200).send('Password has been reset successfully!');
     } catch (error) {
         res.status(500).send('Server error');
     }
