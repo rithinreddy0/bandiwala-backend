@@ -10,7 +10,7 @@ exports.vendorSignup = async (req,res)=>{
                 message:"All feilds are required"
             })
         }
-        const previous_user = await Vendor.findOne({email,phone})
+        const previous_user = await Vendor.findOne({email})
         if(previous_user){
             return res.status(400).json({
                 message:"User already Exists"
