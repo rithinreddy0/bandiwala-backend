@@ -19,7 +19,7 @@ const transporter = nodemailer.createTransport({
 
 const sendMail = (otp,email)=>{
   const mailOptions = {
-    from: 'your-email@gmail.com',
+    from: 'bandiwala@gmail.com',
     to: email,
     subject: 'Verify your email',
     text: `Your OTP for verification is ${otp}`

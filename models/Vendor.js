@@ -2,6 +2,12 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const vendorSchema = new Schema({
+  isVerified:
+   { 
+    type: Boolean, default: false 
+   },
+    otp: { type: Number }, // Store OTP temporarily
+    otpExpires: { type: Date }, // OTP expiration
   email: {
     type: String,
     required: true,
