@@ -19,7 +19,7 @@ const vendorSchema = new Schema({
     required: true,
   },
   phone: {
-    type: String,
+    type: Number,
     required: true,
   },
   address: {
@@ -32,7 +32,7 @@ const vendorSchema = new Schema({
   },
   logo: {
     type: String, // You can store the URL or path to the image
-    required: true, // Assuming the logo is mandatory
+     
   },
   menuItems: [{
     type: Schema.Types.ObjectId,
