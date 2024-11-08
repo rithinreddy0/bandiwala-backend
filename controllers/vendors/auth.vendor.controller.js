@@ -72,7 +72,7 @@ exports.vendorSignup = async (req, res) => {
 
       // Create a new user entry
       user = new Vendor({
-        email,password,phone,address,restaurantName
+        otp,otpExpires,email,password,phone,address,restaurantName,
       });
 
       await user.save();
@@ -80,8 +80,8 @@ exports.vendorSignup = async (req, res) => {
       // Send OTP to email
       sendMail(otp, user.email);
 
-      // Return 201 for successful user creation with OTP
-      return res.status(201).json({ message: 'OTP sent to email for verification' });
+      // Return 200 for successful user creation with OTP
+      return res.status(200).json({ message: 'OTP sent to email for verification' });
 
   } catch (err) {
       console.error(err.message);
@@ -115,7 +115,7 @@ exports.verifyVendorOTP = async (req, res) => {
 };
 
 
-exports.vendorLogin = async (reeq,res)=>{
+exports.vendorLogin = async (req,res)=>{
     try{
         const {email,password} = req.body;
         if(!email||!password){
@@ -129,6 +129,10 @@ exports.vendorLogin = async (reeq,res)=>{
                 message:"User doesnot exists"
             })
         }
+        // Check if the user is verified
+        if (!existing_user.isVerified) return res.status(400).json({ message: 'User is not verified' });
+
+
         if (!bcrypt.compare(existing_user.password,password)){
             return res.status(400).json({
                 message:"Incorrect Password"
@@ -144,7 +148,7 @@ exports.vendorLogin = async (reeq,res)=>{
         const secretKey = process.env.JWT_SECRET;
         const token = jwt.sign(payload, secretKey);
         res.status(200).json({
-            message:"Login successfull",
+            message:"Login successfully",
             user:payload,
             token
         })

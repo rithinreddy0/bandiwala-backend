@@ -6,8 +6,8 @@ const vendorSchema = new Schema({
    { 
     type: Boolean, default: false 
    },
-    otp: { type: Number }, // Store OTP temporarily
-    otpExpires: { type: Date }, // OTP expiration
+  otp: { type: Number }, // Store OTP temporarily
+  otpExpires: { type: Date }, // OTP expiration
   email: {
     type: String,
     required: true,
