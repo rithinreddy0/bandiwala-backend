@@ -7,30 +7,25 @@ const menuItemSchema = new mongoose.Schema({
     ref:"Vendor",
   },
   status:{
-    type:String,
-    enum:["active","inactive"],
-    default:"active"
+    type:boolean,
+    default:true
   },
   name: {
     type: String,
     required: true,
-    trim: true,
+    
   },
   description: {
     type: String,
     required: true,
-    trim: true,
+
   },
   price: {
     type: Number,
     required: true,
     min: 0,
   },
-  category: {
-    type: String,
-    required: true,
-    enum: ['Appetizer', 'Main Course', 'Dessert', 'Beverage'], // Adjust as needed
-  },
+  
   image: {
     type: String,
     default: '', // Use for image URL if needed
