@@ -92,27 +92,34 @@ exports.verifyVendorOTP = async (req, res) => {
     const { email, otp } = req.body;
 
     try {
+        // Find the vendor by email
         const user = await Vendor.findOne({ email });
-        if (!user) return res.status(400).json({ message: 'User not found' });
-        // console.log(user.otp,otp);
-        // Check if OTP is valid and not expired
-        if (user.otp != otp || user.otpExpires < Date.now()) {
-            return res.status(400).json({ message: 'Invalid or expired OTP' });
+        if (!user) return res.status(400).json({ message: 'Vendor not found' });
+
+        // Check if OTP matches and has not expired
+        if (user.otp !== otp) {
+            return res.status(400).json({ message: 'Invalid OTP' });
+        }
+        if (user.otpExpires < Date.now()) {
+            return res.status(400).json({ message: 'OTP has expired' });
         }
 
-        // Mark the user as verified
-        user.isVerified = true;
-        user.otp = undefined;
-        user.otpExpires = undefined;
-        await user.save();
+        // Update user verification status and clear OTP fields
+        await Vendor.updateOne(
+            { email },
+            {
+                isVerified: true,
+                $unset: { otp: "", otpExpires: "" },
+            }
+        );
 
         res.status(200).json({ message: 'Email verified successfully' });
-
     } catch (err) {
-        console.error(err);
-        res.status(500).send('Server error');
+        console.error('Error in OTP verification:', err);
+        res.status(500).json({ message: 'Server error' });
     }
 };
+
 
 
 exports.vendorLogin = async (req,res)=>{
