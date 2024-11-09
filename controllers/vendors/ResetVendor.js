@@ -15,7 +15,7 @@ exports.requestPasswordReset = async (req, res) => {
         // Find user by email
         const user = await Vendor.findOne({ email });
         if (!user) {
-            return res.status(404).send('User not found');
+            return res.status(400).send('User not found');
         }
 
         // Generate OTP and expiry
@@ -54,7 +54,7 @@ exports.verifyOTP = async (req, res) => {
         // Find user by email and validate OTP
         const user = await Vendor.findOne({ email });
         if (!user) {
-            return res.status(404).send('User not found');
+            return res.status(400).send('User not found');
         }
 
         // Verify OTP and check expiry
@@ -83,7 +83,7 @@ exports.resetPassword = async (req, res) => {
         // Find user by email
         const user = await Vendor.findOne({ email });
         if (!user) {
-            return res.status(404).send('User not found');
+            return res.status(400).send('User not found');
         }
 
         // Hash the new password
