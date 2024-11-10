@@ -1,11 +1,11 @@
-
 const nodemailer = require('nodemailer');
-const Vendor = require('../../models/Vendor'); // Assuming you have a User model
+const Vendor = require('../../models/Vendor');
 require('dotenv').config();
 const bcrypt = require('bcrypt');
+
 // Generate a 6-digit OTP
 function generateOTP() {
-    return Math.floor(1000 + Math.random() * 9000).toString(); // Example: 1234
+    return Math.floor(1000 + Math.random() * 9000).toString();
 }
 
 exports.requestPasswordReset = async (req, res) => {
@@ -15,7 +15,7 @@ exports.requestPasswordReset = async (req, res) => {
         // Find user by email
         const user = await Vendor.findOne({ email });
         if (!user) {
-            return res.status(404).send('User not found');
+            return res.status(400).json({ message: 'User not found' });
         }
 
         // Generate OTP and expiry
@@ -39,14 +39,15 @@ exports.requestPasswordReset = async (req, res) => {
 
         transporter.sendMail(mailOptions, (err, info) => {
             if (err) {
-                return res.status(500).send('Error sending email');
+                return res.status(500).json({ message: 'Error sending email' });
             }
-            res.send('OTP sent to your email!');
+            res.json({ message: 'OTP sent to your email!' });
         });
     } catch (error) {
-        res.status(500).send('Server error');
+        res.status(500).json({ message: 'Server error' });
     }
 };
+
 exports.verifyOTP = async (req, res) => {
     const { email, otp } = req.body;
 
@@ -54,22 +55,20 @@ exports.verifyOTP = async (req, res) => {
         // Find user by email and validate OTP
         const user = await Vendor.findOne({ email });
         if (!user) {
-            return res.status(404).send('User not found');
+            return res.status(400).json({ message: 'User not found' });
         }
 
         // Verify OTP and check expiry
         if (user.otp !== otp || user.otpExpiry < Date.now()) {
-            return res.status(400).send('Invalid or expired OTP');
+            return res.status(400).json({ message: 'Invalid or expired OTP' });
         }
 
         // OTP is valid, allow password reset
-        res.send('OTP verified. Proceed to reset password.');
+        res.json({ message: 'OTP verified. Proceed to reset password.' });
     } catch (error) {
-        res.status(500).send('Server error');
+        res.status(500).json({ message: 'Server error' });
     }
 };
-
-
 
 exports.resetPassword = async (req, res) => {
     const { email, newPassword, confirmPassword } = req.body;
@@ -77,13 +76,13 @@ exports.resetPassword = async (req, res) => {
     try {
         // Check if passwords match
         if (newPassword !== confirmPassword) {
-            return res.status(400).send('Passwords do not match');
+            return res.status(400).json({ message: 'Passwords do not match' });
         }
 
         // Find user by email
         const user = await Vendor.findOne({ email });
         if (!user) {
-            return res.status(404).send('User not found');
+            return res.status(400).json({ message: 'User not found' });
         }
 
         // Hash the new password
@@ -95,8 +94,8 @@ exports.resetPassword = async (req, res) => {
         user.otpExpiry = undefined;  // Clear expiry
         await user.save();
 
-        res.send('Password has been reset successfully!');
+        res.json({ message: 'Password has been reset successfully!' });
     } catch (error) {
-        res.status(500).send('Server error');
+        res.status(500).json({ message: 'Server error' });
     }
 };

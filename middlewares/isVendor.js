@@ -18,7 +18,6 @@ exports.isVendor = async (req, res, next) => {
     // Check if the token corresponds to a valid vendor
     const vendor = await Vendor.findById({_id:decoded._id});
     console.log(vendor)
-
     if (!vendor) {
       return res.status(410).json({ message: 'Invalid token or vendor not found.' });
     }
