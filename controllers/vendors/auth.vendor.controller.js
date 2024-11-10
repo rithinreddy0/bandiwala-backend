@@ -115,7 +115,7 @@ exports.verifyVendorOTP = async (req, res) => {
 };
 
 
-exports.vendorLogin = async (reeq,res)=>{
+exports.vendorLogin = async (req,res)=>{
     try{
         const {email,password} = req.body;
         if(!email||!password){
@@ -142,7 +142,9 @@ exports.vendorLogin = async (reeq,res)=>{
             menuItems:existing_user.menuItems,
         }
         const secretKey = process.env.JWT_SECRET;
-        const token = jwt.sign(payload, secretKey);
+        const token = jwt.sign(payload, secretKey,{
+            expiresIn: '1h'
+        });
         res.status(200).json({
             message:"Login successfull",
             user:payload,

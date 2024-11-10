@@ -15,12 +15,10 @@ exports.isUser = async (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     // Find the user by ID if additional validation is needed
-    const user = await User.findById(decoded.userId);
-
+    const user = await User.findById(decoded._id);
     if (!user) {
       return res.status(410).json({ message: 'Invalid token or user not found.' });
     }
-
     // Attach user information to the request object
     req.user = user;
     next();
