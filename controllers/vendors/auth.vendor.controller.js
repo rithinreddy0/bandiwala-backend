@@ -2,6 +2,7 @@ const nodemailer = require('nodemailer');
 const Vendor = require("../../models/Vendor");
 const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 // Secret key for JWT
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -144,15 +145,12 @@ exports.vendorLogin = async (req, res) => {
         const payload = {
             _id: existing_user._id,
             email: existing_user.email,
-            restaurantName: existing_user.restaurantName,
-            logo: existing_user.logo,
-            menuItems: existing_user.menuItems,
         };
         
         const token = jwt.sign(payload, JWT_SECRET);
         res.status(200).json({
             message: "Login successful",
-            user: payload,
+            user: existing_user,
             token
         });
 
