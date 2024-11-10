@@ -2,6 +2,7 @@ const nodemailer = require('nodemailer');
 const Vendor = require("../../models/Vendor");
 const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
+const cloudinary = require('../../config/cloudinaryConfig');
 require('dotenv').config();
 
 // Secret key for JWT
@@ -161,6 +162,49 @@ exports.vendorLogin = async (req,res)=>{
     
     }catch (e) {
         console.error(e.message);
+        res.status(500).json({ message: 'Server error' });
+    }
+};
+
+
+//update profile
+
+
+exports.updateVendorProfile = async (req, res) => {
+    try {
+        const {id, restaurantName, address, cuisineType, operatingHours, logo, phone } = req.body;
+
+        if (req.file){
+            const result=await cloudinary.uploader.upload(req.file.path,{
+                folder:"vendor_logos",
+    
+            })
+            logo=result.secure_url;
+        }
+
+        const updatedVendor = await Vendor.findByIdAndUpdate(
+            id,
+            {
+                restaurantName,
+                address,
+                cuisineType,
+                operatingHours,
+                logo,
+                phone
+            },
+            { new: true } // Return the updated document
+        );
+
+        if (!updatedVendor) {
+            return res.status(400).json({ message: 'Vendor not found' });
+        }
+
+        res.status(200).json({
+            message: 'Profile updated successfully',
+            vendor: updatedVendor
+        });
+    } catch (err) {
+        console.error('Error updating profile:', err);
         res.status(500).json({ message: 'Server error' });
     }
 };

@@ -1,18 +1,19 @@
-const mongoose = require('mongoose');
-const { Schema } = mongoose;
-
 const vendorSchema = new Schema({
-  isVerified:
-   { 
-    type: Boolean, default: false 
-   },
-  otp: { type: Number }, // Store OTP temporarily
-  otpExpires: { type: Date }, // OTP expiration
+  isVerified: { 
+    type: Boolean, 
+    default: false 
+  },
+  otp: { 
+    type: Number 
+  }, // Store OTP temporarily
+  otpExpires: { 
+    type: Date 
+  }, // OTP expiration
   email: {
     type: String,
     required: true,
     unique: true,
-    lowercase: true,
+    
   },
   password: {
     type: String,
@@ -32,7 +33,14 @@ const vendorSchema = new Schema({
   },
   logo: {
     type: String, // You can store the URL or path to the image
-     
+  },
+  cuisineType: {
+    type: String, 
+    
+  },
+  operatingHours: {
+    open: { type: String},  // e.g., "09:00 AM"
+    close: { type: String}, // e.g., "10:00 PM"
   },
   menuItems: [{
     type: Schema.Types.ObjectId,
@@ -54,8 +62,10 @@ const vendorSchema = new Schema({
     },
     review: String,
   }],
-  averageRating: { type: Number, default: 0 },
-
+  averageRating: { 
+    type: Number, 
+    default: 0 
+  },
   createdAt: {
     type: Date,
     default: Date.now,
