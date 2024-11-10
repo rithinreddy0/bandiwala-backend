@@ -142,12 +142,8 @@ exports.vendorLogin = async (req, res) => {
         }
 
         // Generate JWT
-        const payload = {
-            _id: existing_user._id,
-            email: existing_user.email,
-        };
-        
-        const token = jwt.sign(payload, JWT_SECRET);
+       
+        const token = jwt.sign({ _id: existing_user._id.toString() }, JWT_SECRET);
         res.status(200).json({
             message: "Login successful",
             user: existing_user,
