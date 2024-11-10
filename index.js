@@ -21,7 +21,8 @@ const app = express();
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: true }))
 app.use(cors({origin:"*",methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], allowedHeaders: ['Content-Type', 'Authorization'] }));
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));  // Adjust size as needed
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
 app.use(cookieparser());
 // server listening
