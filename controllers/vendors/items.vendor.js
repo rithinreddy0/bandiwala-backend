@@ -2,13 +2,13 @@ const Vendor = require("../../models/Vendor")
 const MenuItem = require('../../models/MenuItem')
 exports.AddMenuItem = async(req,res)=>{
     try{
-        const {name,description,price,category,image,vendor} = req.body;
-        if(!name||!description||!price||!category){
+        const {name,description,price,image,vendor} = req.body;
+        if(!name||!description||!price||!image){
             return res.status(402).json({
                 message:"Required full details"
             })
         }
-        const new_item = await MenuItem.create({name,description,price,image,category,vendorId:vendor._id})
+        const new_item = await MenuItem.create({name,description,price,image,vendorId:vendor._id})
         res.status(200).json({
             message:"menu item created",
             item:new_item
