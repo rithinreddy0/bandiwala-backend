@@ -1,4 +1,6 @@
-const vendorSchema = new Schema({
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
+const vendorSchema = new mongoose.Schema({
   isVerified: { 
     type: Boolean, 
     default: false 
@@ -43,16 +45,16 @@ const vendorSchema = new Schema({
     close: { type: String},
   },
   menuItems: [{
-    type: Schema.Types.ObjectId,
+    type: mongoose.Types.ObjectId,
     ref: 'MenuItem',
   }],
   orders: [{
-    type: Schema.Types.ObjectId,
+    type: mongoose.Types.ObjectId,
     ref: 'Order',
   }],
   ratings: [{
     customerId: {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Types.ObjectId,
       ref: 'User',
     },
     rating: {

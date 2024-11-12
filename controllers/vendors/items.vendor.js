@@ -89,3 +89,22 @@ exports.resumeItem=async(req,res)=>{
         })
     }
 }
+exports.getallitems = async(req,res)=>{
+    try{
+        const {_id} = req.vendor;
+        const items = await MenuItem.find({vendorId:_id});
+        if(!items){
+            return res.status(400).json({
+                message:"No items in menu"
+            })
+        }
+        res.status(200).json({
+            items,
+        });
+
+    }catch(e){
+        res.status(500).json({
+            message:e.message
+        })
+    }
+}

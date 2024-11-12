@@ -174,14 +174,6 @@ exports.updateVendorProfile = async (req, res) => {
     try {
         const {id, restaurantName, address, cuisineType, operatingHours, logo, phone } = req.body;
 
-        if (req.file){
-            const result=await cloudinary.uploader.upload(req.file.path,{
-                folder:"vendor_logos",
-    
-            })
-            logo=result.secure_url;
-        }
-
         const updatedVendor = await Vendor.findByIdAndUpdate(
             id,
             {
