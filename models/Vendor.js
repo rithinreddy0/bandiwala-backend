@@ -39,8 +39,8 @@ const vendorSchema = new Schema({
     
   },
   operatingHours: {
-    open: { type: String},  // e.g., "09:00 AM"
-    close: { type: String}, // e.g., "10:00 PM"
+    open: { type: String},  
+    close: { type: String},
   },
   menuItems: [{
     type: Schema.Types.ObjectId,
