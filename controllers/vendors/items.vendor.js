@@ -5,6 +5,7 @@ exports.AddMenuItem = async(req,res)=>{
         const {name,description,price,image} = req.body;
         const vendor = req.vendor;
         if(!name||!description||!price||!image){
+            
             return res.status(402).json({
                 message:"Required full details"
             })

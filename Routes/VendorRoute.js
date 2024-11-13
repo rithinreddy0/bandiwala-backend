@@ -16,7 +16,12 @@ VendorRouter.post("/getAllMenuItems",isVendor,getallitems)
 VendorRouter.post("/additem",isVendor,AddMenuItem)
 VendorRouter.post("/deleteitem",isVendor,DeleteItem)
 VendorRouter.post("/toggleitem",isVendor,toggleItem)
-
+//verify
+VendorRouter.post("/veriy",isVendor,(req,res)=>{
+    res.status(200).json({
+        message:"vendor verified"
+    })
+})  
 //FORGET PASSWORD ROUTES
 VendorRouter.post('/request-password-reset',requestPasswordReset);
 VendorRouter.post('/verify-password-reset',verifyOTP);

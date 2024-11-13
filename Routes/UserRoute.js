@@ -49,5 +49,10 @@ UserRouter.post("/searchAllItems",searchMenuItems)
 
 //review routes
 UserRouter.post("/addReview",isUser,addReview)
-
+//verify
+UserRouter.post("/veriy",isUser,(req,res)=>{
+  res.status(200).json({
+      message:"user verified"
+  })
+}) 
 module.exports = UserRouter;
