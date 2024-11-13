@@ -99,7 +99,7 @@ exports.verifyOTP = async (req, res) => {
     try {
         const user = await User.findOne({ email });
         if (!user) return res.status(400).json({ message: 'User not found' });
-        console.log(user.otp,otp);
+        // console.log(user.otp,otp);
         // Check if OTP is valid and not expired
         if (user.otp != otp || user.otpExpires < Date.now()) {
             return res.status(400).json({ message: 'Invalid or expired OTP' });

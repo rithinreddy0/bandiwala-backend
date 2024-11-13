@@ -6,7 +6,7 @@ const mongoose = require("mongoose")
     }).catch((e)=>{
        console.log(process.env.DBURL);
         console.log("error");
-        console.log(e);
+        // console.log(e);
     })
 }
 module.exports =  db_connect;

@@ -25,7 +25,7 @@ exports.AddMenuItem = async(req,res)=>{
 exports.DeleteItem = async (req,res)=>{
     try{
         const {id} =req.body;
-        console.log("from ",d)
+        console.log("from ",id)
         if(!id){
             return res.status(402).json({
                 message:"Required id"
@@ -81,7 +81,7 @@ exports.getallitems = async(req,res)=>{
         res.status(200).json({
             data:items,
         });
-        console.log(items)
+        // console.log(items)
     }catch(e){
         res.status(500).json({
             message:e.message

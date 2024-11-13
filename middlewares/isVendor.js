@@ -6,7 +6,7 @@ exports.isVendor = async (req, res, next) => {
   try {
     // Get the token from the header
     const token = req.header('Authorization').replace('Bearer ', '');
-    console.log(token);
+    // console.log(token);
     if (!token) {
       return res.status(410).json({ message: 'Authentication token is missing.' });
     }
@@ -14,10 +14,10 @@ exports.isVendor = async (req, res, next) => {
     // Verify the token
     
     const decoded = await jwt.verify(token, "bandiwala");
-    console.log(decoded._id)
+    // console.log(decoded._id)
     // Check if the token corresponds to a valid vendor
     const vendor = await Vendor.findById({_id:decoded._id});
-    console.log(vendor)
+    // console.log(vendor)
     if (!vendor) {
       return res.status(400).json({ message: 'Invalid token or vendor not found.' });
     }
