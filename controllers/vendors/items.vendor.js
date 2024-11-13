@@ -25,7 +25,7 @@ exports.AddMenuItem = async(req,res)=>{
 exports.DeleteItem = async (req,res)=>{
     try{
         const {id} =req.body;
-        console.log(id)
+        console.log("from ",d)
         if(!id){
             return res.status(402).json({
                 message:"Required id"
