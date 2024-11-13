@@ -19,14 +19,14 @@ exports.isVendor = async (req, res, next) => {
     const vendor = await Vendor.findById({_id:decoded._id});
     console.log(vendor)
     if (!vendor) {
-      return res.status(410).json({ message: 'Invalid token or vendor not found.' });
+      return res.status(400).json({ message: 'Invalid token or vendor not found.' });
     }
 
     // Attach vendor information to the request object
     req.vendor = vendor;
     next();
   } catch (error) {
-    res.status(410).json({ message: 'Unauthorized access. Token verification failed.', error: error.message });
+    res.status(500).json({ message: 'Unauthorized access. Token verification failed.', error: error.message });
   }
 };
 

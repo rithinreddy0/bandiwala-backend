@@ -25,12 +25,13 @@ exports.AddMenuItem = async(req,res)=>{
 exports.DeleteItem = async (req,res)=>{
     try{
         const {id} =req.body;
+        console.log(id)
         if(!id){
             return res.status(402).json({
                 message:"Required id"
             })
         }
-        const item = await MenuItem.findByIdAndDelete({id})
+        const item = await MenuItem.findByIdAndDelete({_id:id})
         res.status(200).json({
             message:"item deleted",
         })
