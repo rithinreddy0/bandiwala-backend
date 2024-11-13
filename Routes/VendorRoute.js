@@ -17,8 +17,8 @@ VendorRouter.post("/additem",isVendor,AddMenuItem)
 VendorRouter.post("/deleteitem",isVendor,DeleteItem)
 VendorRouter.post("/toggleitem",isVendor,toggleItem)
 //verify
-VendorRouter.post("/veriy",isVendor,(req,res)=>{
-    res.status(200).json({
+VendorRouter.post("/verifytoken",isVendor,(req,res)=>{
+    return res.status(200).json({
         message:"vendor verified"
     })
 })  
