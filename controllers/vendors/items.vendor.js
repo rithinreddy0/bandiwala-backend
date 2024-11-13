@@ -39,7 +39,7 @@ exports.DeleteItem = async (req,res)=>{
     }
 }
 
-exports.pauseItem=async(req,res)=>{
+exports.toggleItem=async(req,res)=>{
     try{
         const {id} =req.body;
         if(!id){
@@ -47,41 +47,17 @@ exports.pauseItem=async(req,res)=>{
                 message:"Required id"
             })
         }
-        const item = await MenuItem.findByIdAndUpdate(
-            {id},
-            { status: 'inactive' }, // Update the status to inactive
-            {
-                new: true, // Return the updated document
-                runValidators: true, // Validate the update
-            }
-        );
-        res.status(200).json({
-            message:"item paused",
-        })
-    }catch(e){
-        res.status(500).json({
-            message:e.message
-        })
-    }
-}
-exports.resumeItem=async(req,res)=>{
-    try{
-        const {id} =req.body;
-        if(!id){
-            return res.status(402).json({
-                message:"Required id"
-            })
+        const item = await MenuItem.findById(id);
+        if(item.status === true){
+            item.status = false
         }
-        const item = await MenuItem.findByIdAndUpdate(
-            {id},
-            { status: 'active' }, // Update the status to inactive
-            {
-                new: true, // Return the updated document
-                runValidators: true, // Validate the update
-            }
-        );
+        else{
+            item.status= true;
+        }
+        await item.save()
+
         res.status(200).json({
-            message:"item resumed",
+            message:"item status changed",
         })
     }catch(e){
         res.status(500).json({
@@ -89,6 +65,7 @@ exports.resumeItem=async(req,res)=>{
         })
     }
 }
+
 exports.getallitems = async(req,res)=>{
     try{
         const {_id} = req.vendor;

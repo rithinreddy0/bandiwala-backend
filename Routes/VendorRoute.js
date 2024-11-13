@@ -1,6 +1,6 @@
 const express = require('express');
 const { vendorSignup, vendorLogin,verifyVendorOTP,updateVendorProfile } = require('../controllers/vendors/auth.vendor.controller');
-const { AddMenuItem, DeleteItem, pauseItem, resumeItem, getallitems } = require('../controllers/vendors/items.vendor');
+const { AddMenuItem, DeleteItem, pauseItem, resumeItem, getallitems, toggleItem } = require('../controllers/vendors/items.vendor');
 const { isVendor } = require('../middlewares/isVendor');
 const { requestPasswordReset, verifyOTP, resetPassword } = require('../controllers/vendors/ResetVendor');
 const { getvendorDetails } = require('../controllers/vendors/profile.details');
@@ -15,8 +15,8 @@ VendorRouter.post("/getprofiledetails",isVendor,getvendorDetails)
 VendorRouter.post("/getAllMenuItems",isVendor,getallitems)
 VendorRouter.post("/additem",isVendor,AddMenuItem)
 VendorRouter.post("/deleteitem",isVendor,DeleteItem)
-VendorRouter.post("/pauseitem",isVendor,pauseItem)
-VendorRouter.post("/resumeitem",isVendor,resumeItem)
+VendorRouter.post("/toggleitem",isVendor,toggleItem)
+
 //FORGET PASSWORD ROUTES
 VendorRouter.post('/request-password-reset',requestPasswordReset);
 VendorRouter.post('/verify-password-reset',verifyOTP);
