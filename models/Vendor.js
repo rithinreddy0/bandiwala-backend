@@ -40,10 +40,6 @@ const vendorSchema = new mongoose.Schema({
     type: String, 
     
   },
-  operatingHours: {
-    open: { type: String},  
-    close: { type: String},
-  },
   menuItems: [{
     type: mongoose.Types.ObjectId,
     ref: 'MenuItem',
