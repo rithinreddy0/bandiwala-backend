@@ -28,9 +28,9 @@ exports.getVendorDetails = async (req, res) => {
             });
         }
 
-        
+
         const menu = await MenuItem.find({ vendorId: id });
-        data.menu = menu;
+        data.menuItems = menu;
         res.status(200).json({
             data
         });
