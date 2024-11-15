@@ -172,10 +172,10 @@ exports.vendorLogin = async (req,res)=>{
 
 exports.updateVendorProfile = async (req, res) => {
     try {
-        const {id, restaurantName, address, cuisineType, logo, phone } = req.body;
-
+        const {restaurantName, address, cuisineType, logo, phone } = req.body;
+        const {_id} = req.vendor
         const updatedVendor = await Vendor.findByIdAndUpdate(
-            id,
+            _id,
             {
                 restaurantName,
                 address,
