@@ -12,10 +12,16 @@ const orderSchema = new Schema({
     ref: 'Vendor',
     required: true,
   },
-  cartDetails:{
-    type: Schema.Types.ObjectId,
-    ref: 'Cart',
-  },
+  menuItems: [{
+    menuItem: {
+      type: Schema.Types.ObjectId,
+      ref: 'MenuItem',
+    },
+    quantity: {
+      type: Number,
+      required: true,
+    },
+  }],
   totalAmount: {
     type: Number,
     required: true,
@@ -33,6 +39,14 @@ const orderSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+  deliveryAddress:{
+    type:String,
+    required:true
+  },
+  mobileNo:{
+    type:String,
+    required:true
+  }
 });
 
 module.exports = mongoose.model('Order', orderSchema);

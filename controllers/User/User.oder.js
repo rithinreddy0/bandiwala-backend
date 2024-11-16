@@ -4,12 +4,12 @@ const User = require('../../models/User'); // Adjust the path as needed
 
 exports.createOrder = async (req, res) => {
     try {
-        const {  vendorId } = req.body;
+        const {  vendorId , mobileNo,deliveryAddress } = req.body;
         const userId = req.user._id;
         // Input validation
-        if (!userId || !vendorId) {
+        if (!userId || !vendorId || !mobileNo||!deliveryAddress ){
             return res.status(400).json({
-                message: "User ID and vendor ID are required."
+                message: "Full data required."
             });
         }
         // Find the user's cart
@@ -21,13 +21,20 @@ exports.createOrder = async (req, res) => {
         }
         // Find the user to get the delivery address
         const user1 = await User.findById(userId);
-        if (!user1 || !user.address) {
+        if (!user1 ) {
             return res.status(404).json({
                 message: "User not found or address not set."
             });
         }
-        // Use the delivery address from the user's address
-        const deliveryAddress = `${user.address.roomNo}, Block ${user.address.block}, Landmark: ${user.address.landmark}`;
+        if(!user1.deliveryAddress){
+            user1.deliveryAddress = deliveryAddress;
+            await user1.save();
+        }
+        if(!user1.mobileNo){
+            user1.mobileNo = mobileNo;
+            await user1.save();
+        }
+
         // Create the order
         const order = new Order({
             userId,

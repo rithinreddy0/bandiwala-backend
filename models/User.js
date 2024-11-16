@@ -10,7 +10,7 @@ const UserSchema = new mongoose.Schema({
     isVerified: { type: Boolean, default: false },
     otp: { type: Number }, // Store OTP temporarily
     otpExpires: { type: Date }, // OTP expiration
-    address: {type:String} ,// Include the address schema
+    deliveryAddress: {type:String} ,// Include the address schema
     mobileNo:{type:Number}
 });
 
