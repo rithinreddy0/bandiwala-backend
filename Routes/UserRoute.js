@@ -6,10 +6,11 @@ const { resetPassword, requestPasswordReset, verifyOTP } = require('../controlle
 const { updateAddress } = require('../controllers/User/User.personal');
 const { getAllVendors, getVendorDetails } = require('../controllers/User/user.vendors');
 const { addToCart, getCartDetails, deleteCart } = require('../controllers/User/User.cart');
-const { createOrder, getOrderDetails } = require('../controllers/User/User.oder');
+const { createOrder, getOrderDetails, getAllOrders } = require('../controllers/User/User.oder');
 const { searchMenuItems } = require('../controllers/User/User.search');
 const { addReview } = require('../controllers/User/User.rating');
 const { isUser } = require('../middlewares/isUser');
+const { getAlgorithms } = require('json-web-token');
 
 const UserRouter = express.Router();
 
@@ -43,6 +44,7 @@ UserRouter.post("/getCartDetails",isUser,getCartDetails)
 //order Routes
 UserRouter.post("/createOrder",isUser,createOrder)
 UserRouter.post("/getOrderDetails",isUser,getOrderDetails)
+UserRouter.post("/getallorders",isUser,getAllOrders)
 
 //searching routes
 UserRouter.post("/searchAllItems",searchMenuItems)

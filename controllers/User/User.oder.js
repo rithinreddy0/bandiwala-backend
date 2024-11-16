@@ -4,10 +4,10 @@ const User = require('../../models/User'); // Adjust the path as needed
 
 exports.createOrder = async (req, res) => {
     try {
-        const {  vendorId , mobileNo,deliveryAddress } = req.body;
+        const {  mobileNo,deliveryAddress } = req.body;
         const userId = req.user._id;
         // Input validation
-        if (!userId || !vendorId || !mobileNo||!deliveryAddress ){
+        if (!userId || !mobileNo||!deliveryAddress ){
             return res.status(400).json({
                 message: "Full data required."
             });
@@ -19,6 +19,7 @@ exports.createOrder = async (req, res) => {
                 message: "Cart not found or empty."
             });
         }
+        const vendorId = cart.vendorID;
         // Find the user to get the delivery address
         const user1 = await User.findById(userId);
         if (!user1 ) {
@@ -98,3 +99,19 @@ exports.getOrderDetails = async (req, res) => {
         });
     }
 };
+exports.getAllOrders = async(req,res)=>{
+    try{
+        const user = req.user;
+        const id = user._id;
+        const orders = await Order.find({userId:id}).populate('userId').populate('vendorId');
+        res.status(200).json({
+            message: "Orders retrieved successfully.",
+            data:orders
+            });
+
+    }catch (error) {
+        return res.status(500).json({
+            message: error.message,
+        });
+    }
+}
