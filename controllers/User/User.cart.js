@@ -47,7 +47,7 @@ exports.addToCart = async (req, res) => {
           const oldTotalPrice = currentItem.quantity * menuItem.price;
           cart.totalAmount -= oldTotalPrice;  // Subtract the old amount
           
-          currentItem.quantity = quantityx;  // Update the quantity to the one received from the user
+          currentItem.quantity = quantity;  // Update the quantity to the one received from the user
           
           const newTotalPrice = currentItem.quantity * menuItem.price;
           cart.totalAmount += newTotalPrice; // Add the new total price for the item
