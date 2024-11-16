@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
 const vendorSchema = new mongoose.Schema({
   isVerified: { 
     type: Boolean, 
@@ -39,10 +38,6 @@ const vendorSchema = new mongoose.Schema({
   cuisineType: {
     type: String, 
     
-  },
-  operatingHours: {
-    open: { type: String},  
-    close: { type: String},
   },
   menuItems: [{
     type: mongoose.Types.ObjectId,

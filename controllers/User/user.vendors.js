@@ -27,9 +27,10 @@ exports.getVendorDetails = async (req, res) => {
                 message: "Vendor not found"
             });
         }
-        data.password = ""; // Optionally remove the password
+
+
         const menu = await MenuItem.find({ vendorId: id });
-        data.menu = menu;
+        data.menuItems = menu;
         res.status(200).json({
             data
         });
