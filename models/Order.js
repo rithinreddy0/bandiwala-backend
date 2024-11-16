@@ -12,16 +12,10 @@ const orderSchema = new Schema({
     ref: 'Vendor',
     required: true,
   },
-  menuItems: [{
-    menuItem: {
-      type: Schema.Types.ObjectId,
-      ref: 'MenuItem',
-    },
-    quantity: {
-      type: Number,
-      required: true,
-    },
-  }],
+  cartDetails:{
+    type: Schema.Types.ObjectId,
+    ref: 'Cart',
+  },
   totalAmount: {
     type: Number,
     required: true,

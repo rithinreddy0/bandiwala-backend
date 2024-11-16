@@ -1,12 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
-const AddressSchema = new mongoose.Schema({
-    roomNo: { type: String, required: true },
-    block: { type: String, required: true },
-    phoneNumber: { type: String, required: true },
-    landmark: { type: String, required: true }
-}, { _id: false }); // Set _id to false to avoid creating an additional _id field for the address
+
 
 const UserSchema = new mongoose.Schema({
     name: { type: String, required: true },
@@ -15,7 +10,8 @@ const UserSchema = new mongoose.Schema({
     isVerified: { type: Boolean, default: false },
     otp: { type: Number }, // Store OTP temporarily
     otpExpires: { type: Date }, // OTP expiration
-    address: AddressSchema // Include the address schema
+    address: {type:String} ,// Include the address schema
+    mobileNo:{type:Number}
 });
 
 // Hash the password before saving the user model
