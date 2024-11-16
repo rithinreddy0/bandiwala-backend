@@ -5,6 +5,7 @@ const User = require('../../models/User'); // Adjust the path as needed
 exports.createOrder = async (req, res) => {
     try {
         const {  mobileNo,deliveryAddress } = req.body;
+        console.log(mobileNo,deliveryAddress)
         const userId = req.user._id;
         // Input validation
         if (!userId || !mobileNo||!deliveryAddress ){
@@ -43,6 +44,7 @@ exports.createOrder = async (req, res) => {
             menuItems: cart.items,
             totalAmount: cart.totalAmount,
             deliveryAddress,
+            mobileNo,
             createdAt: new Date(),
         });
         // Save the order to the database
@@ -55,6 +57,7 @@ exports.createOrder = async (req, res) => {
         });
 
     } catch (error) {
+        console.log(error)
         return res.status(500).json({
             message: error.message,
         });

@@ -28,8 +28,8 @@ const orderSchema = new Schema({
   },
   status: {
     type: String,
-    enum: ['Pending', 'Order Placed', 'Preparing',"On the Way", 'Delivered', 'Cancelled'],
-    default: 'Pending',
+    enum: ['Order Placed', 'Preparing',"On the Way", 'Delivered', 'Cancelled'],
+    default: 'Order Placed',
   },
   deliveryAddress: {
     type: String,
