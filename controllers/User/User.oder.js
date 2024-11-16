@@ -68,8 +68,8 @@ exports.createOrder = async (req, res) => {
 
 exports.getOrderDetails = async (req, res) => {
     try {
-        const { orderId } = req.params;
-
+        const { orderId } = req.body;
+        console.log(orderId)
         // Input validation
         if (!orderId) {
             return res.status(400).json({
@@ -78,7 +78,7 @@ exports.getOrderDetails = async (req, res) => {
         }
 
         // Find the order by ID and populate user and menu items
-        const order = await Order.findById(orderId)
+        const order = await Order.findById({_id:orderId})
             .populate('userId', 'name email') // Populate user details (adjust fields as needed)
             .populate('vendorId', 'name') // Populate vendor details (adjust fields as needed)
             .populate('menuItems.menuItem'); // Populate menu item details

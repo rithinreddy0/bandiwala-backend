@@ -3,7 +3,7 @@ const express = require('express');
 const { check } = require('express-validator');
 const authController = require('../controllers/User/authController');
 const { resetPassword, requestPasswordReset, verifyOTP } = require('../controllers/User/resetPassword');
-const { updateAddress } = require('../controllers/User/User.personal');
+const { updateAddress, getUserDeliveryDeatils } = require('../controllers/User/User.personal');
 const { getAllVendors, getVendorDetails } = require('../controllers/User/user.vendors');
 const { addToCart, getCartDetails, deleteCart } = require('../controllers/User/User.cart');
 const { createOrder, getOrderDetails, getAllOrders } = require('../controllers/User/User.oder');
@@ -28,6 +28,9 @@ UserRouter.post('/login', [
 UserRouter.post('/request-password-reset',requestPasswordReset);
 UserRouter.post('/verify-password-reset',verifyOTP);
 UserRouter.post('/reset-password',resetPassword);
+
+//addressa and phone no
+UserRouter.post('/getdeliverydeatils',isUser,getUserDeliveryDeatils)
 
 //updating profile
 UserRouter.post("/updateAddresss",isUser,updateAddress)
