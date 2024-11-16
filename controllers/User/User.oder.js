@@ -4,8 +4,8 @@ const User = require('../../models/User'); // Adjust the path as needed
 
 exports.createOrder = async (req, res) => {
     try {
-        const { user1, vendorId } = req.body;
-        const userId = user1._id;
+        const {  vendorId } = req.body;
+        const userId = req.user._id;
         // Input validation
         if (!userId || !vendorId) {
             return res.status(400).json({
@@ -20,8 +20,8 @@ exports.createOrder = async (req, res) => {
             });
         }
         // Find the user to get the delivery address
-        const user = await User.findById(userId);
-        if (!user || !user.address) {
+        const user1 = await User.findById(userId);
+        if (!user1 || !user.address) {
             return res.status(404).json({
                 message: "User not found or address not set."
             });

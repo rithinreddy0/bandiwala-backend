@@ -37,8 +37,8 @@ UserRouter.post("/getVendorDetails",getVendorDetails)
 
 //cart routes
 UserRouter.post("/addToCart",isUser,addToCart)
-UserRouter.post("/getCartDetails",isUser,getCartDetails)
 UserRouter.post("/deleteCart",isUser,deleteCart)
+UserRouter.post("/getCartDetails",isUser,getCartDetails)
 
 //order Routes
 UserRouter.post("/createOrder",isUser,createOrder)
@@ -50,7 +50,7 @@ UserRouter.post("/searchAllItems",searchMenuItems)
 //review routes
 UserRouter.post("/addReview",isUser,addReview)
 //verify
-UserRouter.post("/veriy",isUser,(req,res)=>{
+UserRouter.post("/verify",isUser,(req,res)=>{
   res.status(200).json({
       message:"user verified"
   })

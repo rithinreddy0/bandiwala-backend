@@ -7,6 +7,10 @@ const cartSchema = new Schema({
     ref: 'User',
     required: true,
   },
+  vendorID:{
+    type: Schema.Types.ObjectId,
+    ref:'Vendor'
+  },
   items: [{
     menuItem: {
       type: Schema.Types.ObjectId,

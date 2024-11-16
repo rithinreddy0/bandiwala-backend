@@ -3,8 +3,8 @@ const MenuItem = require('../../models/MenuItem');
 
 exports.addToCart = async (req, res) => {
     try {
-        const { user, menuItemId, quantity } = req.body;
-        userId = user._id;
+        const { menuItemId, quantity } = req.body;
+        const userId=req.user._id;
         // Input validation
         if (!userId || !menuItemId || !quantity) {
             return res.status(400).json({
@@ -20,10 +20,17 @@ exports.addToCart = async (req, res) => {
         }
         // Find the cart for the user
         let cart = await Cart.findOne({ userId });
+        console.log(cart)
         // Calculate total price
         const totalPrice = menuItem.price * quantity;
         if (cart) {
             // Update the existing cart
+            console.log(menuItem.vendorId,cart.vendorID)
+            if(!menuItem.vendorId.equals(cart.vendorID)){
+                return res.status(400).json({
+                    message: "You can't add items from different vendors to the same cart"
+                });
+            }
             const itemIndex = cart.items.findIndex(item => item.menuItem.equals(menuItemId));
 
             if (itemIndex > -1) {
@@ -42,6 +49,7 @@ exports.addToCart = async (req, res) => {
                 userId,
                 items: [{ menuItem: menuItemId, quantity }],
                 totalAmount: totalPrice,
+                vendorID:menuItem.vendorId
             });
         }
         // Save the cart

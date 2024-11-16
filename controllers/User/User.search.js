@@ -2,7 +2,7 @@ const MenuItem = require('../../models/MenuItem'); // Adjust the path as needed
 
 exports.searchMenuItems = async (req, res) => {
     try {
-        const { query } = req.query;
+        const { query } = req.body;
 
         // Input validation
         if (!query) {
@@ -17,7 +17,7 @@ exports.searchMenuItems = async (req, res) => {
 
         res.status(200).json({
             message: "Search suggestions retrieved successfully.",
-            suggestions
+            data:suggestions
         });
     } catch (error) {
         return res.status(500).json({
