@@ -7,7 +7,7 @@ exports.addToCart = async (req, res) => {
       const userId = req.user._id;  // Assuming you're using a middleware to populate req.user
   
       // Input validation
-      console.log(object)
+
       if (!userId || !menuItemId || quantity === undefined) {
         return res.status(400).json({
           message: "User ID, menu item ID, and quantity are required"
