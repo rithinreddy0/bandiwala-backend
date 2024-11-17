@@ -137,13 +137,14 @@ exports.getAllOrders = async (req, res) => {
 exports.updateOrderStatus = async (req, res) => {
   try {
     const { orderId, status } = req.body;
+    console.log(status,orderId);
 
     if (!orderId || !status) {
       return handleValidationError(res, "Order ID and status are required.");
     }
 
     // Validate status values
-    const validStatuses = ['Order Placed', 'Preparing',"On the Way", 'Delivered', 'Cancelled'];
+    const validStatuses = ['Order Placed','Accepted', 'Preparing',"On the Way", 'Delivered', 'Cancelled'];
     if (!validStatuses.includes(status)) {
       return handleValidationError(res, "Invalid status value.");
     }

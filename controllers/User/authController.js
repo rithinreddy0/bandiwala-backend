@@ -140,7 +140,7 @@ exports.login = async (req, res) => {
           isVerified: user.isVerified
         }
         // Create JWT token
-        const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '2d' });
 
         // Send the token as a cookie
         res.cookie('userToken', token, { httpOnly: true, maxAge: 3600000 }); // 1 hour

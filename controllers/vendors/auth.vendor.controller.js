@@ -152,7 +152,7 @@ exports.vendorLogin = async (req,res)=>{
         }
         const secretKey = process.env.JWT_SECRET;
         const token = jwt.sign(payload, secretKey,{
-            expiresIn: '1h'
+            expiresIn: '3d'
         });
         res.status(200).json({
             message: "Login successful",
@@ -173,6 +173,7 @@ exports.vendorLogin = async (req,res)=>{
 exports.updateVendorProfile = async (req, res) => {
     try {
         const {restaurantName, address, cuisineType, logo, phone } = req.body;
+        // console.log(restaurantName, address, cuisineType, logo, phone)
         const {_id} = req.vendor
         const updatedVendor = await Vendor.findByIdAndUpdate(
             _id,
