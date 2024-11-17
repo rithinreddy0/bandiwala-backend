@@ -51,8 +51,7 @@ exports.createOrder = async (req, res) => {
     // Clear the user's cart
     await Cart.deleteOne({ userId });
 
-    // Notify the frontend or other services via Socket.IO
-    req.app.get("socketio").emit("orderUpdate", { action: "created", order });
+   
 
     res.status(201).json({
       message: "Order created successfully.",
@@ -117,6 +116,9 @@ exports.getAllOrders = async (req, res) => {
     return res.status(500).json({ message: "Internal server error." });
   }
 };
+
+
+
 
 // Update order status
 exports.updateOrderStatus = async (req, res) => {
