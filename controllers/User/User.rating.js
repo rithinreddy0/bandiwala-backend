@@ -1,24 +1,36 @@
+const Order = require('../../models/Order');
 const Review = require('../../models/Review'); // Adjust the path as needed
 const Vendor = require('../../models/Vendor'); // Adjust the path as needed
 
 exports.addReview = async (req, res) => {
     try {
-        const { vendorId } = req.params; // Assuming vendorId is passed in the URL
-        const { user, rating, comment } = req.body;
-        const userid = user._id;
-        // Input validation
-        if (!userId || !rating) {
+        const { orderId } = req.body; // Assuming vendorId is passed in the URL
+        const {  rating, comment } = req.body;
+        const userId = req.user._id;
+        const review1 = await Review.findOne({orderId});
+        if(review1){
+            return res.status(450).json({
+                rating:review1.rating,
+                message:"Already added"
+            })
+        }
+        const data = await Order.findOne({_id:orderId});
+        const vendorId = data.vendorId;
+        // Input validation 
+        console.log(req.body)
+        if (!orderId || !rating) {
             return res.status(400).json({
                 message: "User ID and rating are required."
             });
         }
-
+        console.log(data)
         // Create a new review
         const review = new Review({
             vendorId,
             userId,
             rating,
-            comment
+            comment,
+            orderId
         });
 
         // Save the review
