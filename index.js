@@ -43,23 +43,10 @@ const io = new Server(server, {
 app.set("io", io);
 // Socket.IO logic
 io.on("connection", (socket) => {
-  console.log(`Client connected: ${socket.id}`);
-
-  // Listen for custom events from clients (if needed)
-  socket.on("message", (data) => {
-    console.log(`Message received: ${data}`);
-  });
-
-  // Emit events to notify all connected clients
-  socket.on("orderStatusUpdated", (data) => {
-    console.log(`Order status updated: ${JSON.stringify(data)}`);
-    io.emit("orderStatusUpdated", data); // Broadcast to all clients
-  });
-
-  // Handle disconnection
-  socket.on("disconnect", () => {
-    console.log(`Client disconnected: ${socket.id}`);
-  });
+  socket.on("joinVendorRoom", (vendorId) => {
+    console.log("Vendor ${vendorId} joined their room");
+    socket.join(vendorId.toString());
+  });
 });
 
 // Start server with Socket.IO
