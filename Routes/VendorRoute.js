@@ -4,6 +4,8 @@ const { AddMenuItem, DeleteItem, pauseItem, resumeItem, getallitems, toggleItem 
 const { isVendor } = require('../middlewares/isVendor');
 const { requestPasswordReset, verifyOTP, resetPassword } = require('../controllers/vendors/ResetVendor');
 const { getvendorDetails } = require('../controllers/vendors/profile.details');
+const { getOrdersForVendor } = require('../controllers/vendors/order.con');
+const { updateOrderStatus } = require('../controllers/User/User.oder');
 const VendorRouter = express.Router();
 //AUTHENTICATION ROUTES
 VendorRouter.post("/signup",vendorSignup)
@@ -26,4 +28,11 @@ VendorRouter.post("/verifytoken",isVendor,(req,res)=>{
 VendorRouter.post('/request-password-reset',requestPasswordReset);
 VendorRouter.post('/verify-password-reset',verifyOTP);
 VendorRouter.post('/reset-password',resetPassword);
+
+
+//ORDER ROUTES
+VendorRouter.post('/getOrdersForVendor',isVendor,getOrdersForVendor);
+VendorRouter.post("/updateOrderStatus",isVendor,updateOrderStatus);
+
+
 module.exports = VendorRouter;

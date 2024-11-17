@@ -10,7 +10,7 @@ const { Server } = require("socket.io"); // Socket.IO server
 
 const UserRouter = require("./Routes/UserRoute");
 const VendorRouter = require("./Routes/VendorRoute");
-
+ 
 // Constants
 const port = process.env.PORT || 3000;
 
@@ -31,6 +31,7 @@ app.use(express.json({ limit: "10mb" })); // Adjust size as needed
 app.use(express.urlencoded({ limit: "10mb", extended: true }));
 app.use(cookieparser());
 
+
 // Server and Socket.IO setup
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -39,7 +40,7 @@ const io = new Server(server, {
     methods: ["GET", "POST"],
   },
 });
-
+app.set("io", io);
 // Socket.IO logic
 io.on("connection", (socket) => {
   console.log(`Client connected: ${socket.id}`);

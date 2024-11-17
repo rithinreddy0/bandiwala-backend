@@ -1,6 +1,7 @@
 const Order = require("../../models/Order");
 const Cart = require("../../models/Cart");
 const User = require("../../models/User");
+const Vendor = require("../../models/Vendor");
 
 // Utility function for validation errors
 const handleValidationError = (res, message) => {
@@ -9,60 +10,73 @@ const handleValidationError = (res, message) => {
 
 // Create a new order
 exports.createOrder = async (req, res) => {
-  try {
-    const { mobileNo, deliveryAddress } = req.body;
-    const userId = req.user?._id;
-
-    if (!userId || !mobileNo || !deliveryAddress) {
-      return handleValidationError(res, "User ID, mobile number, and delivery address are required.");
+    try {
+      const { mobileNo, deliveryAddress } = req.body;
+      const userId = req.user?._id;
+  
+      if (!userId || !mobileNo || !deliveryAddress) {
+        return res.status(400).json({
+          message: "User ID, mobile number, and delivery address are required.",
+        });
+      }
+  
+      // Retrieve the user's cart
+      const cart = await Cart.findOne({ userId }).populate("items.menuItem");
+      if (!cart || cart.items.length === 0) {
+        return res.status(404).json({ message: "Cart not found or empty." });
+      }
+  
+      // Update user details if missing
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.status(404).json({ message: "User not found." });
+      }
+      if (!user.deliveryAddress) user.deliveryAddress = deliveryAddress;
+      if (!user.mobileNo) user.mobileNo = mobileNo;
+      await user.save();
+  
+      // Validate the vendor
+      const vendor = await Vendor.findById(cart.vendorID);
+      if (!vendor) {
+        return res.status(404).json({ message: "Vendor not found." });
+      }
+  
+      // Create and save the order
+      const order = new Order({
+        userId,
+        vendorId: cart.vendorID,
+        menuItems: cart.items,
+        totalAmount: cart.totalAmount,
+        deliveryAddress,
+        mobileNo,
+        createdAt: new Date(),
+      });
+      await order.save();
+  
+      // Clear the user's cart
+      await Cart.deleteOne({ userId });
+  
+      // Update the vendor's orders
+      vendor.orders.push(order._id);
+      await vendor.save();
+  
+      // Notify the vendor in real time
+      const io = req.app.get("io");
+      io.to(vendor._id.toString()).emit("newOrder", {
+        message: "You have a new order!",
+        order,
+      });
+  
+      res.status(201).json({
+        message: "Order created successfully.",
+        order,
+      });
+    } catch (error) {
+      console.error("Error in createOrder:", error);
+      res.status(500).json({ message: "Internal server error." });
     }
-
-    // Check for cart
-    const cart = await Cart.findOne({ userId }).populate("items.menuItem");
-    if (!cart || cart.items.length === 0) {
-      return res.status(404).json({ message: "Cart not found or empty." });
-    }
-
-    // Update user data if necessary
-    const user = await User.findById(userId);
-    if (!user) {
-      return res.status(404).json({ message: "User not found." });
-    }
-
-    // Update missing details
-    if (!user.deliveryAddress) user.deliveryAddress = deliveryAddress;
-    if (!user.mobileNo) user.mobileNo = mobileNo;
-    await user.save();
-
-    // Create the order
-    const order = new Order({
-      userId,
-      vendorId: cart.vendorID,
-      menuItems: cart.items,
-      totalAmount: cart.totalAmount,
-      deliveryAddress,
-      mobileNo,
-      createdAt: new Date(),
-    });
-
-    // Save the order
-    await order.save();
-
-    // Clear the user's cart
-    await Cart.deleteOne({ userId });
-
-   
-
-    res.status(201).json({
-      message: "Order created successfully.",
-      order,
-    });
-  } catch (error) {
-    console.error("Error in createOrder:", error);
-    return res.status(500).json({ message: "Internal server error." });
-  }
-};
-
+  };
+  
 // Get details of a specific order
 exports.getOrderDetails = async (req, res) => {
   try {
@@ -104,8 +118,7 @@ exports.getAllOrders = async (req, res) => {
     // Fetch all orders for the user
     const orders = await Order.find({ userId })
       .sort({ createdAt: -1 }) // Sort by latest orders first
-      .populate("vendorId", "name")
-      .populate("menuItems.menuItem", "name price");
+      .populate("vendorId")
 
     res.status(200).json({
       message: "Orders retrieved successfully.",
