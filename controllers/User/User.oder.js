@@ -66,7 +66,7 @@ exports.createOrder = async (req, res) => {
       message: "You have a new order!",
       order,
     });
-    console.log("sent to ",vendor._id,order);
+    console.log("sent to ",vendor._id.toString(),order);
     res.status(201).json({
       message: "Order created successfully.",
       order,
