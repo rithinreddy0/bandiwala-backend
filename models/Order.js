@@ -28,7 +28,7 @@ const orderSchema = new Schema({
   },
   status: {
     type: String,
-    enum: ['Order Placed', 'Preparing',"On the Way", 'Delivered', 'Cancelled'],
+    enum: ['Order Placed', 'Preparing', 'Delivered', 'Cancelled','Accepted'],
     default: 'Order Placed',
   },
   deliveryAddress: {
