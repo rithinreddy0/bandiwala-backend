@@ -162,9 +162,6 @@ exports.updateOrderStatus = async (req, res) => {
       return res.status(404).json({ message: "Order not found." });
     }
 
-    // Notify frontend about the updated status via Socket.IO
-    req.app.get("socketio").emit("orderUpdate", { action: "updated", order });
-
     res.status(200).json({
       message: "Order status updated successfully.",
       order,
