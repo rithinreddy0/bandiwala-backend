@@ -55,6 +55,8 @@ exports.getUserDeliveryDeatils = async(req,res)=>{
     return res.status(200).json({
         message: "User delivery details",
         data: {
+            name:user.name,
+            email:user.email,
             deliveryAddress,
             mobileNo
         }
