@@ -48,7 +48,7 @@ UserRouter.post("/getCartDetails",isUser,getCartDetails)
 UserRouter.post("/createOrder",isUser,createOrder)
 UserRouter.post("/getOrderDetails",isUser,getOrderDetails)
 UserRouter.post("/getallorders",isUser,getAllOrders)
-userRouter.Post("/updateOrderStatus",isUser,updateOrderStatus)
+UserRouter.post("/updateOrderStatus",isUser,updateOrderStatus)
 
 //searching routes
 UserRouter.post("/searchAllItems",searchMenuItems)
